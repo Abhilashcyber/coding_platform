@@ -58,8 +58,7 @@ const Playground = () => {
       params: { base64_encoded: 'true', fields: '*' },
       headers: {
         'content-type': 'application/json',
-        'Content-Type': 'application/json',
-        'X-RapidAPI-Key': 'b4e5c5a05fmsh9adf6ec091523f8p165338jsncc58f31c26e1',
+        'X-RapidAPI-Key': process.env.REACT_APP_JUDGE0_SUBMISSION_KEY,
         'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
       },
       data: JSON.stringify({
@@ -68,31 +67,30 @@ const Playground = () => {
         stdin: stdin
       })
     };
-
+  
     const res = await axios.request(options);
-    return res.data.token
-  }
-
+    return res.data.token;
+  };
+  
   const getOutput = async (token) => {
-    // we will make api call here
     const options = {
       method: 'GET',
-      url: "https://judge0-ce.p.rapidapi.com/submissions/" + token,
+      url: `https://judge0-ce.p.rapidapi.com/submissions/${token}`,
       params: { base64_encoded: 'true', fields: '*' },
       headers: {
-        'X-RapidAPI-Key': '3ed7a75b44mshc9e28568fe0317bp17b5b2jsn6d89943165d8',
+        'X-RapidAPI-Key': process.env.REACT_APP_JUDGE0_RESULT_KEY,
         'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
       }
     };
-
-    // call the api
+  
     const res = await axios.request(options);
     if (res.data.status_id <= 2) {
       const res2 = await getOutput(token);
       return res2.data;
     }
     return res.data;
-  }
+  };
+  
 
   const runCode = async () => {
     openModal({
