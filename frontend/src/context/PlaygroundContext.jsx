@@ -35,35 +35,12 @@ export const languageMap = {
 const PlaygroundProvider = ({ children }) => {
 
     const initialItems = {
-        [uuid()]: {
-            title: "DSA",
-            playgrounds: {
-                [uuid()]: {
-                    title: "Stack Implementation",
-                    language: "cpp",
-                    code: languageMap["cpp"].defaultCode,
-                },
-                [uuid()]: {
-                    name: "Array",
-                    language: "javascript",
-                    code: languageMap["javascript"].defaultCode,
-                },
-            }
-        },
+        
     }
 
     const [folders, setFolders] = useState(() => {
-        let localData = localStorage.getItem('playgrounds-data');
-        if (localData === null || localData === undefined) {
-            return initialItems;
-        }
-
-        return JSON.parse(localData);
+        return initialItems;
     })
-
-    useEffect(() => {
-        localStorage.setItem('playgrounds-data', JSON.stringify(folders));
-    }, [folders])
 
     const deleteCard = (folderId, cardId) => {
         setFolders((oldState) => {
