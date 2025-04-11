@@ -2,11 +2,11 @@
 
 # dependencies
 node_modules
-/.pnp
+.pnp
 .env
 .venv
 serviceAccountKey.json
-
+__pycache__
 # testing
 /coverage
 
