@@ -1,7 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
-from auth import get_password_hash
-from models import User,UserInDB
+from helpers import get_password_hash
+from models import User, UserInDB
 cred = credentials.Certificate('./serviceAccountKey.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
@@ -10,20 +10,20 @@ class DB:
     def __init__(self):
         self.db = db
     
-    def get_all_questions():
+    def get_all_questions(self):
         pass
 
-    def get_question_by_id(id:int):
+    def get_question_by_id(self,id:int):
         pass
 
-    def get_users():
+    def get_users(self,):
         pass
 
-    def get_user_by_username(username:str):
+    def get_user_by_username(self,username:str):
         doc_ref = db.collection("users").document(username)
         doc = doc_ref.get()
         if doc.exists:
-            return doc
+            return doc.to_dict()
         else:
             return False
 
@@ -35,12 +35,12 @@ class DB:
                               disabled=False,
                               hashed_password=hashed_password)
         doc_ref = db.collection("users").document(data.username)
-        res = doc_ref.set(data.model_dump())
+        res = doc_ref.set(store_data.model_dump())
         return res
 
 if __name__ == "__main__":
     db_class = DB()
     user = User(username="Abhi",email="Something",full_name="something",disabled=False,password="something")
-    print(user.model_dump_json())
-    res = db_class.register_user(user)
-    print(res)
+    # res = db_class.register_user(user)
+    # res = db_class.get_user_by_username("Abhi")
+    # print(res)

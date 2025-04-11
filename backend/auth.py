@@ -5,9 +5,9 @@ from datetime import datetime, timedelta, timezone
 from jose import JWTError, jwt
 from jwt import InvalidTokenError
 from passlib.context import CryptContext
+from helpers import get_password_hash, verify_password
 import os
 from dotenv import load_dotenv
-
 from models import TokenData, UserInDB, User
 
 load_dotenv()
@@ -19,14 +19,9 @@ ACCESS_TOKEN_EXP_TIME = os.getenv("ACCESS_TOKEN_EXP_TIME")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-def get_user(db, username: str):
-    if username in db:
+def get_user(db,username: str):
+    res = db.get_user_by_username(username)
+    if res:
         user_dict = db[username]
         return UserInDB(**user_dict)
 
